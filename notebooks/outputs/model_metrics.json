@@ -10,7 +10,7 @@
         "min_sup": 50,
         "input_rows": 118310,
         "output_cells": 3538,
-        "output_file": "/Users/dzafuc/Documents/Data Mining/final-data-mining-project/outputs/iceberg_cube.csv"
+        "output_file": "outputs/iceberg_cube.csv"
     },
     "clustering": {
         "algorithm": "K-Means",
@@ -32,12 +32,12 @@
         ],
         "best_k": 4,
         "silhouette_scores": {
-            "2": 0.2252901141929506,
-            "3": 0.24623633742156908,
-            "4": 0.2673437807655161,
-            "5": 0.24431990239549964,
-            "6": 0.25713734673675714,
-            "7": 0.25218372986541765
+            "2": 0.2268246035433352,
+            "3": 0.24776229576605532,
+            "4": 0.267268136346158,
+            "5": 0.24429806156684175,
+            "6": 0.25707278405899114,
+            "7": 0.25366248483933074
         },
         "inertias": {
             "2": 456320.21246219723,
@@ -45,19 +45,19 @@
             "4": 302272.61228848435,
             "5": 262477.0636948544,
             "6": 233574.3543423584,
-            "7": 206947.63370688635
+            "7": 206947.63370688632
         },
         "pca_explained_variance_ratio": [
             0.32624305181755947,
             0.21069796562904283
         ],
         "cluster_names": {
-            "0": "Khách hàng trải nghiệm thấp",
-            "1": "Khách hàng tiềm năng",
-            "2": "Khách hàng có giá trị cao",
+            "0": "Khách hàng giá trị thấp",
+            "1": "Khách hàng ít hoạt động",
+            "2": "Khách hàng giá trị cao",
             "3": "Khách hàng tiềm năng"
         },
-        "output_file": "/Users/dzafuc/Documents/Data Mining/final-data-mining-project/outputs/customer_clusters.csv"
+        "output_file": "outputs/customer_clusters.csv"
     },
     "cluster_profile": [
         {
@@ -69,7 +69,7 @@
             "avg_review_score": 4.6,
             "avg_delivery_days": 6.83,
             "customer_count": 44634,
-            "cluster_name": "Khách hàng trải nghiệm thấp"
+            "cluster_name": "Khách hàng giá trị thấp"
         },
         {
             "cluster": 1,
@@ -80,7 +80,7 @@
             "avg_review_score": 1.52,
             "avg_delivery_days": 16.35,
             "customer_count": 14629,
-            "cluster_name": "Khách hàng tiềm năng"
+            "cluster_name": "Khách hàng ít hoạt động"
         },
         {
             "cluster": 2,
@@ -91,7 +91,7 @@
             "avg_review_score": 4.16,
             "avg_delivery_days": 8.49,
             "customer_count": 2913,
-            "cluster_name": "Khách hàng có giá trị cao"
+            "cluster_name": "Khách hàng giá trị cao"
         },
         {
             "cluster": 3,
