@@ -1,5 +1,6 @@
 payment_type
-credit_card
 voucher
 boleto
+credit_card
 debit_card
+unknown
