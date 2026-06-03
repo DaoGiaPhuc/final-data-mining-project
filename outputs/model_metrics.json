@@ -10,17 +10,14 @@
         "min_sup": 50,
         "input_rows": 118310,
         "output_cells": 3538,
-        "output_file": "/Users/dzafuc/Documents/Data Mining/final-data-mining-project/outputs/iceberg_cube.csv"
+        "output_file": "../outputs/iceberg_cube.csv"
     },
     "clustering": {
         "algorithm": "K-Means",
         "features": [
             "recency",
             "frequency",
-            "monetary",
-            "avg_order_value",
-            "avg_review_score",
-            "avg_delivery_days"
+            "monetary"
         ],
         "k_range": [
             2,
@@ -32,77 +29,65 @@
         ],
         "best_k": 4,
         "silhouette_scores": {
-            "2": 0.2252901141929506,
-            "3": 0.24623633742156908,
-            "4": 0.2673437807655161,
-            "5": 0.24431990239549964,
-            "6": 0.25713734673675714,
-            "7": 0.25218372986541765
+            "2": 0.22751151566383274,
+            "3": 0.2487259490867693,
+            "4": 0.2681400693050642,
+            "5": 0.24506942848062166,
+            "6": 0.2579284248605922,
+            "7": 0.25416607653224166
         },
         "inertias": {
-            "2": 456320.21246219723,
-            "3": 368526.09787728894,
-            "4": 302272.61228848435,
-            "5": 262477.0636948544,
-            "6": 233574.3543423584,
-            "7": 206947.63370688635
+            "2": 456315.0405540753,
+            "3": 368520.9018412302,
+            "4": 302254.2663388494,
+            "5": 262459.2523020466,
+            "6": 233558.97470323415,
+            "7": 206930.68965357717
         },
         "pca_explained_variance_ratio": [
-            0.32624305181755947,
-            0.21069796562904283
+            0.3924142152192857,
+            0.33296333298251196
         ],
         "cluster_names": {
-            "0": "Khách hàng trải nghiệm thấp",
-            "1": "Khách hàng tiềm năng",
-            "2": "Khách hàng có giá trị cao",
-            "3": "Khách hàng tiềm năng"
+            "0": "Khách hàng tiềm năng",
+            "1": "Khách hàng giá trị thấp",
+            "2": "Khách hàng giá trị cao",
+            "3": "Khách hàng ít hoạt động"
         },
-        "output_file": "/Users/dzafuc/Documents/Data Mining/final-data-mining-project/outputs/customer_clusters.csv"
+        "output_file": "../outputs/customer_clusters.csv"
     },
     "cluster_profile": [
         {
             "cluster": 0,
-            "recency": 246.32,
+            "recency": 149.65,
             "frequency": 1.0,
-            "monetary": 69.89,
-            "avg_order_value": 63.88,
-            "avg_review_score": 4.6,
-            "avg_delivery_days": 6.83,
-            "customer_count": 44634,
-            "cluster_name": "Khách hàng trải nghiệm thấp"
+            "monetary": 73.08,
+            "customer_count": 37609,
+            "cluster_name": "Khách hàng tiềm năng"
         },
         {
             "cluster": 1,
-            "recency": 251.57,
+            "recency": 430.73,
             "frequency": 1.0,
-            "monetary": 159.73,
-            "avg_order_value": 129.83,
-            "avg_review_score": 1.52,
-            "avg_delivery_days": 16.35,
-            "customer_count": 14629,
-            "cluster_name": "Khách hàng tiềm năng"
+            "monetary": 120.57,
+            "customer_count": 27578,
+            "cluster_name": "Khách hàng giá trị thấp"
         },
         {
             "cluster": 2,
             "recency": 226.2,
             "frequency": 2.11,
             "monetary": 348.72,
-            "avg_order_value": 126.01,
-            "avg_review_score": 4.16,
-            "avg_delivery_days": 8.49,
             "customer_count": 2913,
-            "cluster_name": "Khách hàng có giá trị cao"
+            "cluster_name": "Khách hàng giá trị cao"
         },
         {
             "cluster": 3,
-            "recency": 237.96,
+            "recency": 185.9,
             "frequency": 1.0,
-            "monetary": 305.97,
-            "avg_order_value": 267.27,
-            "avg_review_score": 4.58,
-            "avg_delivery_days": 8.29,
-            "customer_count": 33244,
-            "cluster_name": "Khách hàng tiềm năng"
+            "monetary": 349.72,
+            "customer_count": 27320,
+            "cluster_name": "Khách hàng ít hoạt động"
         }
     ]
 }
