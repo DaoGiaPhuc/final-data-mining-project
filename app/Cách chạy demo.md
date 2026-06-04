@@ -33,7 +33,7 @@ pip install -r requirements.txt
 streamlit run app/app.py
 ```
 
-Trình duyệt tự mở `http://localhost:8501` — nhấn **🚀 Bắt đầu Demo** là xong!
+Trình duyệt tự mở `http://localhost:8501` — nhấn ** StartDemo** là xong!
 
 ---
 
