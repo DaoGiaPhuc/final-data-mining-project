@@ -24,7 +24,7 @@ cd final-data-mining-project
 ### 2. Cài thư viện
 
 ```cmd
-pip install -r requirements.txt
+pip install streamlit plotly pandas scikit-learn
 ```
 
 ### 3. Chạy app
@@ -33,7 +33,7 @@ pip install -r requirements.txt
 streamlit run app/app.py
 ```
 
-Trình duyệt tự mở `http://localhost:8501` — nhấn **🚀 Bắt đầu Demo** là xong!
+Trình duyệt tự mở `http://localhost:8501` — nhấn vào đường link là xong!
 
 ---
 
