@@ -13,10 +13,29 @@ st.markdown("""
 html, body, [class*="css"] { font-family: 'Inter', sans-serif; background-color: #f8f9fa; color: #212529; }
 .main-title { font-size: 1.8rem; font-weight: 700; color: #1f2937; margin-bottom: 0px; }
 .sub-title { font-size: 0.95rem; color: #6b7280; margin-bottom: 15px; }
-/* Tối ưu Tabs cho dễ click */
-.stTabs [data-baseweb="tab-list"] { gap: 4px; }
-.stTabs [data-baseweb="tab"] { height: 45px; padding: 0 15px; background-color: #ffffff; border-radius: 6px 6px 0 0; border: 1px solid #e5e7eb; border-bottom: none; font-size: 0.9rem;}
-.stTabs [aria-selected="true"] { background-color: #eff6ff; border-top: 3px solid #3b82f6; font-weight: 600; color: #1d4ed8; }
+
+/* CĂN GIỮA VÀ TỐI ƯU CÁC TABS */
+.stTabs [data-baseweb="tab-list"] { 
+    gap: 4px; 
+    justify-content: center; /* Thêm dòng này để đưa toàn bộ hàng tab ra giữa */
+}
+
+.stTabs [data-baseweb="tab"] { 
+    height: 45px; 
+    padding: 0 15px; 
+    background-color: #ffffff; 
+    border-radius: 6px 6px 0 0; 
+    border: 1px solid #e5e7eb; 
+    border-bottom: none; 
+    font-size: 0.9rem;
+}
+
+.stTabs [aria-selected="true"] { 
+    background-color: #eff6ff; 
+    border-top: 3px solid #3b82f6; 
+    font-weight: 600; 
+    color: #1d4ed8; 
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -133,10 +152,10 @@ with tab3:
     st.info(" **Kiến trúc Star Schema:** Dữ liệu chuẩn hóa 1 Fact Table trung tâm và các Dimension Tables vệ tinh.")
     col_w1, col_w2 = st.columns(2)
     with col_w1:
-        st.markdown("** Fact Table (fact_sales)**")
+        st.markdown(" Fact Table (fact_sales)")
         st.dataframe(fact.head(8), use_container_width=True, hide_index=True)
     with col_w2:
-        st.markdown("** Dim Table (dim_date)**")
+        st.markdown(" Dim Table (dim_date)")
         st.dataframe(dim_date.head(8), use_container_width=True, hide_index=True)
 
 # TAB 4: ICEBERG CUBE (Thuật toán BUC)
@@ -151,7 +170,18 @@ with tab4:
         top10 = cube_df[cube_df["cuboid_level"]>0].nlargest(10, "order_count")[["cuboid", "label", "order_count", "total_revenue"]].copy()
         top10["total_revenue"] = top10["total_revenue"].map("R$ {:,.0f}".format)
         top10.columns = ["Cuboid Level", "Tổ hợp giá trị (Cell)", "Số đơn", "Doanh thu"]
-        st.dataframe(top10, use_container_width=True, hide_index=True)
+        
+        st.dataframe(
+            top10, 
+            use_container_width=True, 
+            hide_index=True,
+            column_config={
+                "Cuboid Level": st.column_config.NumberColumn(alignment="left"),
+                "Tổ hợp giá trị (Cell)": st.column_config.TextColumn(alignment="left"),
+                "Số đơn": st.column_config.NumberColumn(alignment="left"),
+                "Doanh thu": st.column_config.TextColumn(alignment="left")
+            }
+        )
 
 # TAB 5: CLUSTERING (K-MEANS & PCA)
 with tab5:
@@ -167,7 +197,9 @@ with tab5:
 
 # TAB 6: BUSINESS ACTIONS
 with tab6:
-    st.markdown("**Đặc điểm từng Cụm (Cluster Profile)**")
+    st.markdown("###  Đặc điểm cấu trúc các nhóm khách hàng (Cluster Profile)")
+    
+    # Tính toán dữ liệu đặc trưng cụm
     profile = clusters.groupby("cluster_name").agg(
         Số_khách = ("customer_unique_id", "count"),
         R_Days = ("recency", "mean"),
@@ -175,13 +207,72 @@ with tab6:
         M_Spend = ("monetary", "mean"),
     ).round(1).reset_index()
     profile = profile.rename(columns={"cluster_name": "Nhãn Cụm", "Số_khách": "SL Khách"})
-    st.dataframe(profile.style.format({"R_Days": "{:.1f}", "F_Orders": "{:.1f}", "M_Spend": "R$ {:,.1f}"}).background_gradient(subset=["M_Spend"], cmap="Greens"), use_container_width=True, hide_index=True)
 
-    st.markdown("#### Gợi ý chiến lược")
+    st.dataframe(
+        profile, 
+        use_container_width=True, 
+        hide_index=True,
+        column_config={
+            "Nhãn Cụm": st.column_config.TextColumn("Nhãn Cụm", alignment="center"),
+            "SL Khách": st.column_config.NumberColumn("SL Khách", format="%d", alignment="center"),
+            "R_Days": st.column_config.NumberColumn("Recency (Ngày TB)", format="%.1f", alignment="center"),
+            "F_Orders": st.column_config.NumberColumn("Frequency (Đơn TB)", format="%.1f", alignment="center"),
+            "M_Spend": st.column_config.NumberColumn("Monetary (Doanh thu TB)", format="R$ %,.1f", alignment="center"),
+        }
+    )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown("###  Định Hướng Chiến Lược Tiếp Thị Cá Nhân Hóa (CRM)")
+  
     c_rec1, c_rec2 = st.columns(2)
+    
     with c_rec1:
-        st.success("**Khách hàng giá trị cao:** Ưu tiên giữ chân — Loyalty program, gửi đặc quyền VIP.")
-        st.info("**Khách hàng tiềm năng:** Nurture — Gợi ý sản phẩm liên quan (Cross-sell) kích thích mua lần 2.")
+        st.markdown("""
+        <div style="background-color: #e6f4ea; padding: 18px; border-radius: 10px; border-left: 6px solid #137333; margin-bottom: 18px;">
+            <h4 style="color: #137333; margin-top:0; margin-bottom: 8px;"> Khách hàng giá trị cao (Champions)</h4>
+            <p style="color: #202124; font-size: 0.95rem; margin-bottom: 6px;"><b>Đặc trưng:</b> Vừa tương tác mua hàng, tần suất dày và mức chi tiêu cực lớn.</p>
+            <ul style="color: #202124; font-size: 0.9rem; margin-left: -15px; line-height: 1.6;">
+                <li>Xây dựng chương trình <b>Loyalty VIP</b> tích điểm đổi quà độc quyền để tăng lòng trung thành.</li>
+                <li>Cấp quyền <b>Early Access</b> (trải nghiệm sớm) các bộ sưu tập hoặc tính năng mới của Olist.</li>
+                <li>Điều hướng tới bộ phận CSKH ưu tiên để đảm bảo chỉ số <i>Review Score</i> luôn ở mức tối đa.</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div style="background-color: #e8f0fe; padding: 18px; border-radius: 10px; border-left: 6px solid #1a73e8; margin-bottom: 18px;">
+            <h4 style="color: #1a73e8; margin-top:0; margin-bottom: 8px;"> Khách hàng tiềm năng (Promising)</h4>
+            <p style="color: #202124; font-size: 0.95rem; margin-bottom: 6px;"><b>Đặc trưng:</b> Mức độ tương tác gần đây khá tốt, mức chi tiêu ở mức khá.</p>
+            <ul style="color: #202124; font-size: 0.9rem; margin-left: -15px; line-height: 1.6;">
+                <li>Triển khai hệ thống gợi ý tự động <b>Cross-sell</b> dựa trên các ngành hàng họ từng mua.</li>
+                <li>Tặng mã giảm giá "Kích hoạt đơn hàng tiếp theo" có giới hạn thời gian (7 ngày) để thúc đẩy tần suất.</li>
+                <li>Gửi các thông báo cá nhân hóa (Newsletter) về các sản phẩm thuộc xu hướng.</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
     with c_rec2:
-        st.warning("**Khách hàng giá trị thấp:** Upsell — Bán theo combo hoặc Freeship khi đạt ngưỡng chi tiêu.")
-        st.error("**Khách hàng ít hoạt động:** Win-back campaign — Gửi Email nhắc nhở, tặng discount kích hoạt.")
+        st.markdown("""
+        <div style="background-color: #fef7e0; padding: 18px; border-radius: 10px; border-left: 6px solid #b06000; margin-bottom: 18px;">
+            <h4 style="color: #b06000; margin-top:0; margin-bottom: 8px;"> Khách hàng giá trị thấp (Price-Sensitive)</h4>
+            <p style="color: #202124; font-size: 0.95rem; margin-bottom: 6px;"><b>Đặc trưng:</b> Mua hàng thưa thớt, giá trị đơn nhỏ, cực kỳ nhạy cảm về giá.</p>
+            <ul style="color: #202124; font-size: 0.9rem; margin-left: -15px; line-height: 1.6;">
+                <li>Tập trung chiến lược <b>Upsell bằng Combo</b> để kéo cao chỉ số giá trị đơn hàng trung bình (AOV).</li>
+                <li>Áp dụng ngưỡng <b>Free Shipping Threshold</b> (Ví dụ: Miễn phí vận chuyển khi mua từ R$ 150).</li>
+                <li>Gợi ý các mặt hàng thuộc danh mục Flash Sale, xả kho giá sốc để kích thích ham muốn chốt đơn.</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div style="background-color: #fce8e6; padding: 18px; border-radius: 10px; border-left: 6px solid #c5221f; margin-bottom: 18px;">
+            <h4 style="color: #c5221f; margin-top:0; margin-bottom: 8px;">Khách hàng ít hoạt động (Churn Risk)</h4>
+            <p style="color: #202124; font-size: 0.95rem; margin-bottom: 6px;"><b>Đặc trưng:</b> Đã quá lâu không phát sinh giao dịch, có nguy cơ cao rời bỏ nền tảng.</p>
+            <ul style="color: #202124; font-size: 0.9rem; margin-left: -15px; line-height: 1.6;">
+                <li>Kích hoạt chuỗi chiến dịch tự động <b>Win-back Campaign</b> thông qua kênh Email/SMS Marketing.</li>
+                <li>Tặng mã giảm giá sâu (Deep Discount) đánh trúng vào sản phẩm họ đang bỏ dở trong giỏ hàng.</li>
+                <li>Gửi thông báo nhắc nhở về số điểm tích lũy hoặc quyền lợi cũ sắp hết hạn để kéo họ mở lại app.</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
